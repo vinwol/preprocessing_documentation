@@ -6,17 +6,19 @@
 # <br>
 # <b>Analysis Description</b>
 # <br>
-# Tabular representation of absolute value and change from Baseline in Volume Hard Exudates (unit: nano liters),
-# in the 3 mm Center using the study eye.
-# Report values are at visits: Baseline, Week 1, Week 4, Week 8.
-# Stratification of patients by: Baseline Volume Hard Exudates Tertile in the 3 mm Center.
+# Using Ophtha test data for an example preprocessing.
+# Tabular representation of absolute value and change from Baseline in Volume Hard 
+# Exudates (unit: nano liters), in the 3 mm Center using the study eye.
+# Reporting values at visits: Baseline, Week 1, Week 4, Week 8.
+# Stratification of patients by: 
+# Baseline Volume Hard Exudates Tertile in the 3 mm Center.
 # Volume of Hard Exudates is calculated as the sum of HEV plus IHRMV.
 # <br>
 # <b>Used Datasets</b>
 # <br>
-# OEIMOPM test dataset for Dummy Study 1. 
+# Test dataset for dummy Study 1. 
 # <br>
-# OEIMOPM test dataset for Dummy Study 2. 
+# Test dataset for dummy Study 2. 
 # <br>
 # <b>Used Variables</b>
 # <br>
@@ -100,13 +102,13 @@ create_test_data <- function(study_id, num_patients) {
         dplyr::mutate(
             HEV = if_else(AVISIT == 'Baseline', abs(rnorm(1, 0.2, 0.05)), HEV),
             IHRMV = if_else(AVISIT == 'Baseline', abs(rnorm(1, 0.1, 0.05)), IHRMV)
-        ) %>% ungroup()
+        ) %>% dplyr::ungroup()
     
     return(df[, common_vars])
 }
 #'------------------------------------------------------------------------------
-oeimopm_study1 <- create_test_data(88412, 800)
-oeimopm_study2 <- create_test_data(88413, 778)
+test_study1 <- create_test_data(88412, 800)
+test_study2 <- create_test_data(88413, 778)
 #'------------------------------------------------------------------------------
 pats_num_list <- list()
 #'------------------------------------------------------------------------------
@@ -116,31 +118,31 @@ pats_num_list <- list()
 #@STEP:001
 # Fetching Ophtha test dataset for Study 1.
 #@DOCU-END
-pats_num_list[[1]] <- length(unique(oeimopm_study1$UNI_ID))
+pats_num_list[[1]] <- length(unique(test_study1$UNI_ID))
 
 #@DOCU-START
 #@STEP:002
 # Fetching Ophtha test dataset for Study 2.
 #@DOCU-END
-pats_num_list[[2]] <- length(unique(oeimopm_study2$UNI_ID))
+pats_num_list[[2]] <- length(unique(test_study2$UNI_ID))
 
 # Check variables in common.
-shared_vars <- intersect(names(oeimopm_study1), names(oeimopm_study2))
-print(paste0("Number of columns in oeimopm_study1: ", length(names(oeimopm_study1))))
-print(paste0("Number of columns in oeimopm_study2: ", length(names(oeimopm_study2))))
+shared_vars <- intersect(names(test_study1), names(test_study2))
+print(paste0("Number of columns in test_study1: ", length(names(test_study1))))
+print(paste0("Number of columns in test_study2: ", length(names(test_study2))))
 print(paste0("Number of columns in common: ", length(shared_vars)))
-unique_cols <- setdiff(names(oeimopm_study1), names(oeimopm_study2))
-print("Columns unique to oeimopm_study1:")
+unique_cols <- setdiff(names(test_study1), names(test_study2))
+print("Columns unique to test_study1:")
 print(unique_cols)
-unique_cols <- setdiff(names(oeimopm_study2), names(oeimopm_study1))
-print("Columns unique to oeimopm_study2:")
+unique_cols <- setdiff(names(test_study2), names(test_study1))
+print("Columns unique to test_study2:")
 print(unique_cols)
 
 #@DOCU-START
 #@STEP:003
 # Merging datasets.
 #@DOCU-END
-oeimopm_merged <- rbind(oeimopm_study1[,shared_vars], oeimopm_study2[,shared_vars])
+oeimopm_merged <- rbind(test_study1[,shared_vars], test_study2[,shared_vars])
 pats_num_list[[3]] <- length(unique(oeimopm_merged$UNI_ID))
 
 # Count empty strings
@@ -316,12 +318,11 @@ opm_vol_data <- opm_vol_data %>%
 
 #@DOCU-START
 #@STEP:018
-# Saving dataset to: ./output/oeimopm_volume_data.rds
+# Saving results.
 # Format:
 # @HTML_TABLE: "./output/data_table.html"  
 #@DOCU-END
 path <- "./output/"
-saveRDS(opm_vol_data, paste0(path,"volume_data.rds"))
 pats_num_list[[18]] <- length(unique(opm_vol_data$UNI_ID))
 cat(unlist(pats_num_list), file = paste0(path,"pats_num.txt"), sep = ",") 
 data_to_plot <- head(opm_vol_data, 12)
