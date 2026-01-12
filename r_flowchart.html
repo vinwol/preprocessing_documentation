@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+<title>R Script Flowchart with Counts and Content</title>
+<style>
+
+  body { font-family: Arial, Helvetica, sans-serif; background-color: #f0f0f0; display: flex; justify-content: center; padding-top: 20px; padding-bottom: 20px; }
+  #flowchart-container { display: flex; flex-direction: column; align-items: center; width: 90%; max-width: 700px; }
+  h1 { color: #333; border-bottom: 2px solid #ccc; padding-bottom: 10px; margin-bottom: 25px; text-align: center; width: 100%; }
+  .flowchart-description { background-color: #f9f9f9; border: 1px solid #cccccc; border-radius: 4px; padding: 15px; margin-bottom: 30px; text-align: justify; color: #555; width: 100%; box-sizing: border-box; line-height: 1.6; }
+  .flowchart-box { background-color: #ffffff; border: 1px solid #ccc; border-radius: 5px; padding: 20px; margin-bottom: 50px; width: 100%; box-sizing: border-box; text-align: left; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.1); line-height: 1.5; }
+  .flowchart-box.has-embedded-table { min-width: 1000px; }
+  .flowchart-box strong { font-weight: bold; color: #0066cc; display: inline; margin-right: 5px; }
+  .patient-count { font-style: italic; color: #28a745; margin-left: 0px; } 
+  .patient-count.na { color: #dc3545; }
+  .flowchart-image { display: block; max-width: 95%; height: auto; margin: 10px auto 5px auto; border: 1px solid #ddd; }
+  .embedded-html-table { margin-top: 10px; margin-bottom: 5px; max-width: 100%; overflow-x: auto; border: 1px solid #eee; }
+  .embedded-html-table table { width: 1200px; min-width: 100%; border-collapse: collapse; font-size: 0.85em; margin: 0; }
+  .embedded-html-table th, .embedded-html-table td { border: 1px solid #ddd !important; padding: 4px 6px !important; white-space: nowrap !important; text-align: left !important; }
+  .embedded-html-table th { background-color: #f8f8f8 !important; font-weight: bold !important; }
+  .error { color: red; font-weight: bold; }
+  .flowchart-box:not(:last-child)::after { content: ''; position: absolute; bottom: -35px; left: 50%; transform: translateX(-50%); width: 2px; height: 25px; background-color: #555; z-index: -1; }
+  .flowchart-box:not(:last-child)::before { content: ''; position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent; border-top: 10px solid #555; z-index: -1; }
+  
+</style>
+</head>
+<body>
+<div id='flowchart-container'>
+<h1>Flowchart of the Pre-Processing Steps</h1>
+
+<div class='flowchart-box' id='box-1'>
+<strong>STEP:001</strong><br><span class='patient-count'>n = 1800</span><br>Load ADSL dataset from clinical database<br>
+</div>
+
+<div class='flowchart-box' id='box-2'>
+<strong>STEP:002</strong><br><span class='patient-count'>n = 1778</span><br>Filter for Safety Population (SAFFL == 'Y')<br>
+</div>
+
+<div class='flowchart-box' id='box-3'>
+<strong>STEP:003</strong><br><span class='patient-count'>n = 1578</span><br>Exclude patients with missing baseline weight<br>
+</div>
+
+<div class='flowchart-box' id='box-4'>
+<strong>STEP:004</strong><br><span class='patient-count'>n = 1532</span><br>Create age groups: &lt;65 years, ≥65 years<br>
+</div>
+</div>
+</body>
+</html>
